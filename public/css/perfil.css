@@ -1,0 +1,16 @@
+.redondeado{
+    border-radius: 5px;
+    background-color: lightskyblue;
+    border: transparent;
+    width: 80%;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+}
+.redondeado:placeholder-shown {
+
+    border-color: black;
+
+}

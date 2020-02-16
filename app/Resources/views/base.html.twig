@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Sticky Footer Navbar Template · Bootstrap</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}"/>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sticky-footer-navbar/">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ asset('css/sticky-footer-navbar.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
+
+    {% block head_css %}
+        <!-- Copy CSS from https://getbootstrap.com/docs/4.1/getting-started/introduction/#css -->
+    {% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        {% if app.user %}
+            <a class="navbar-brand" href="{{path('miMuro')}}">Inicio</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+
+
+
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('fos_user_security_logout')}}">Cerrar sesión </a>
+
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../miperfil">Mi Perfil</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('fos_user_change_password') }}" >Cambiar Contraseña</a>
+                </li>
+            </ul>
+
+            {% else %}
+            <a class="navbar-brand" href="../app_dev.php">Home</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+
+
+            <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('fos_user_registration_register') }}">Registrarse </a>
+
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('fos_user_security_login')}}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link " href="{{ path('fos_user_resetting_request')}}"  >Recuperar contraseña</a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+
+            <form class="form-inline mt-2 mt-md-0" method="get" action="{{ path('busquedas_usuarios') }}">
+                <input class="form-control mr-sm-   2" type="text" placeholder="buscar" aria-label="Search" name="busqueda" value="{% if busqueda is defined %}{{ busqueda }}{% endif %}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">buscar</button>
+            </form>
+
+
+
+</div>
+        </div>
+    </nav>
+</header>
+{% for i in app.User  %}
+
+<li>{{ i.getId() }}</li>
+{% endfor %}
+
+{% if app.user %}
+{% else %}
+    {% if app.request.attributes.get('_route')== "homepage" %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm" style="margin-top: 5em; text-align:center;">
+
+                <h1 style="color:white;margin:auto;font-size: 200%;font-family: Catamaran,Helvetica,Arial,sans-serif;">Si ya tiene una cuenta puede iniciar sesion</h1>
+                <form>
+                <input type="button" class="btn btn-outline-primary" value="iniciar sesion"onclick=" window.location.href='{{ path('fos_user_security_login') }}'" style="font-size: 150%">
+                </form>
+            </div>
+            <div class="col-sm" style="margin-top: 5em; text-align:center;">
+
+                <h1 style="color:white;margin:auto;font-size: 200%;font-family: Catamaran,Helvetica,Arial,sans-serif;">¿no tiene una cuenta? registrese ahora</h1>
+
+
+                <form>
+                    <input type="button" class="btn btn-outline-primary" value="registrarse" onclick="window.location.href='{{ path('fos_user_registration_register') }}'" style="font-size: 150%" />
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endif %}
+
+{% block body %}
+
+{% endblock %}
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+{% block javascripts %}{% endblock %}
+{% block head_js %}
+    <!-- Copy JavaScript from https://getbootstrap.com/docs/4.1/getting-started/introduction/#js -->
+{% endblock %}
+<footer class="footer mt-auto py-3">
+    <div class="container">
+        <span class="text-muted">Taller de nuevas tecnologias : Sistemas 2019</span>
+    </div>
+</footer>
+
+
+</body>
+</html>
+

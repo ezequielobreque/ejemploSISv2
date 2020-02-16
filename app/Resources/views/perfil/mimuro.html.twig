@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/perfil.css') }}">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+
+    <div class="wrapper">
+        <div class="flexContainer">
+            <div class="firstCol">
+
+                {% if app.user.imageName==null %}
+                    <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+                {% else%}
+                    <img src="{{ asset('imagenes/user/' ~ app.user.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+                {% endif %}
+                <i>{{ app.user.username }}</i>
+                <br>
+
+                <br>
+
+                <i style="text-align: center;color: white">Usuarios que sigues</i>
+                <div class="innerFlex" style="display:flex" >
+                    {% for noami in app.user.losQueSigo|slice(0, 2) %}
+
+                        <div class="ca mb-3">
+                            {% if noami.imageName==null %}
+                                <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:50px;height: 50px;">
+                            {% else%}
+                                <img src="{{ asset('imagenes/user/' ~ noami.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:75px;height: 60px;">
+                            {% endif %}
+                            <a href="/perfil/{{ noami.username }}">{{ noami.username }}</a>
+                            <br>
+
+                        </div>
+
+                    {% endfor %}
+                </div>
+                <a href="#" style="text-align: center;color: white">Mas usuarios</a>
+
+            </div>
+            <div class="secondCol">
+                <div class="innerFlex">
+                    <div class="col-12">
+                        <div class="card mb-3">
+
+                            {{ form_start(form) }}
+
+                            {{ form_errors(form) }}
+
+
+
+
+                   <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#home" role="tab"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#messages" role="tab"><i class="far fa-image"aria-hidden="true"></i></a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="card-block">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="home" role="tabpanel" aria-expanded="true">
+                                {{ form_widget(form.informacion , { 'attr': {'class': 'form-control border-0 sinborde','id':'exampleTextarea','rows':'3','placeholder':'Deja tu Estado','style':'resize: none'}})}}
+                                    {#<textarea class="form-control border-0 sinborde" id="exampleTextarea" rows="3" placeholder="Deja tu Estado" style="resize: none;"></textarea>#}
+                                </div>
+
+                                <div class="tab-pane" id="messages" role="tabpanel" aria-expanded="false"> <div class="form-group">
+                                        {{ form_widget(form.imageFile,{'attr':{'type':"file" ,'class':'form-control-file','id':'exampleInputFile' ,'aria-describedby':'fileHelp'}}) }}
+
+                                     </div>
+                                </div>
+
+                            </div>
+                            <div class="divider"></div>
+                            <br>
+                            <a class="text-left collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></a>
+                            {{ form_row(form.save)}}
+                        </div>
+
+
+                       {{ form_end(form) }}
+
+                    </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+    {% for mensaje in perfil%}
+
+                        <div class="col-12">
+                            <div class="card mb-3">
+                                <div class="card-block">
+
+                                    <h4 class="card-title">
+                                        {% if mensaje.user.imageName==null %}
+                                            <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:50px;height: 50px;">
+                                        {% else%}
+                                            <img src="{{ asset('imagenes/user/' ~ mensaje.user.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="height: 45px;width:75px;">
+                                        {% endif %}
+
+                                        <a href="../perfil/{{ mensaje.user.username }}">{{ mensaje.user.username }}</a></h4>
+
+                                    <p class="card-text">{{ mensaje.getInformacion() }}.</p>
+                                    <i class="card-text"><small class="text-muted">{{ mensaje.fechaHora | date('d/m/Y H:i') }}</small></i>
+                                </div>
+                                {% if mensaje.imageName==null %}
+                                {% else%}
+                                    <img class="card-img-bottom" src="{{ asset('imagenes/mensaje/' ~ mensaje.imageName) }}" alt="Card image cap">
+                                {% endif %}
+
+
+
+                                    <form class="card-footer text-muted center" method="POST" action="{{ path('miMuro') }}">
+                                        <input class="form-control mr-sm-   2" type="hidden" placeholder="buscar" aria-label="Search" name="megusta" value="{{ mensaje.getId() }}" >
+
+
+
+                                        {% if app.user.MegustaMensaje(mensaje)==false %}
+
+                                            <button class="far fa-thumbs-up" type="submit" style="border: 2px solid lightgray; ">me gusta </button>({{ mensaje.meGustas }})
+
+                                        {%else  %}
+
+                                            <button class="fas fa-thumbs-up" type="submit" style="border: 2px solid deepskyblue;">me gusta </button>({{ mensaje.meGustas }})
+
+                                        {% endif %}
+
+                                    </form>
+
+
+                            </div>
+                        </div>
+
+    {% endfor %}
+
+
+
+    </div>
+            </div>
+    <div class="thirdCol">
+        <i style="text-align: center;color: white">usuarios que talvez conoscas</i>
+        <div class="innerFlex">
+            {% for noami in noamigos %}
+
+                <div class="ca mb-3">
+                    {% if noami.imageName==null %}
+                        <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:50px;height: 50px;">
+                    {% else%}
+                        <img src="{{ asset('imagenes/user/' ~ noami.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:75px;height: 60px;">
+                    {% endif %}
+                    <a href="../perfil/{{ noami.username }}">{{ noami.username }}</a>
+                    <br>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+
+    {% block javascripts %}
+
+    {% endblock %}
+
+{% endblock %}

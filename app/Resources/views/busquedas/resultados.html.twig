@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="wrapper">
+        <div class="flexContainer">
+            <div class="firstCol">
+
+            </div>
+            <div class="secondCol">
+                {% for usuarios in  resultados %}
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <div class="card-block">
+                                <h4 class="card-title">
+                                    {% if usuarios.imageName==null %}
+                                    <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;height: 75px;">
+                                    {% else%}
+                                    <img src="{{ asset('imagenes/user/' ~ usuarios.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+                                    {% endif %}
+                                    {{ usuarios.username }}</h4>
+                                <form class="form-inline mt-2 mt-md-0" method="get" action="{{ path('userPerfil', {'id': usuarios.username }) }}">
+
+                                    <button class="btn btn-primary" type="submit">visitar</button>
+                                </form>
+
+
+                        </div>
+                    </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="thirdCol">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

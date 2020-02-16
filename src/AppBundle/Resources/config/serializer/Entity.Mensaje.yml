@@ -1,0 +1,15 @@
+AppBundle\Entity\Mensaje:
+    exclusion_policy: ALL
+    properties:
+        informacion:
+            expose: true
+            groups: ['list']
+        fechaHora:
+            expose: true
+            groups: ['list']
+        user:
+            expose: true
+            groups: ['list']
+        imageName:
+            expose: true
+            groups: ['list']

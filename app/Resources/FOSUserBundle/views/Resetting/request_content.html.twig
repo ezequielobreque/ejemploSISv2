@@ -1,0 +1,26 @@
+{% trans_default_domain 'FOSUB' %}
+
+
+
+
+
+<div class="col-12">
+    <div class="card mb-3">
+
+        <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+            <div>
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" id="username" name="username" required="required" />
+            </div>
+            <div>
+                <input type="submit" value="Pedir cambio de contraseña" />
+            </div>
+        </form>
+
+
+    </div>
+</div>
+</div>
+
+
+

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+
+{{ form_start(form)}}
+    {#<form class="card-footer text-muted center" method="POST" action="{{ path('CambiarC') }}">
+        <h1>nuevo password:</h1> <input class="form-control mr-sm-   2" type="password" placeholder="nuevo password" aria-label="nuevo password" name="contra" value="" >
+        <button class="far fa-thumbs-up" type="submit">cambiar contrasenia </button>
+    </form>
+
+    {{ dump(var) }}
+    {{ form_end(form) }}#}
+    {% block javascripts %}
+    {% endblock %}
+{
+{% endblock %}

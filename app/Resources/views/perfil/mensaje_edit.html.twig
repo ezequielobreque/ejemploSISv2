@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/perfil.css') }}">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+
+    <div class="wrapper">
+        <div class="flexContainer">
+            <div class="firstCol">
+
+
+                {% if app.user.imageName==null %}
+                    <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+                {% else%}
+                    <img src="{{ asset('imagenes/user/' ~ app.user.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+                {% endif %}
+                <i>{{ app.user.username }}</i>
+
+            </div>
+            <div class="secondCol">
+                <div class="innerFlex">
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            {{ form_start(edit) }}
+                            {{ form_errors(edit) }}
+                            <h4 class="card-title">
+                                {% if app.user.imageName==null %}
+                                <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+                                {% else%}
+                                <img src="{{ asset('imagenes/user/' ~ app.user.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="height: 50px; width:75px;">
+                               {%endif%}
+                                {{ mensaje.getUser().getUsername() }}</h4>
+                            {{ form_row(edit.informacion)}}
+
+                            {% if mensaje.imageName==null %}
+                            {% else%}
+                                <img class="card-img-bottom" src="{{ asset('imagenes/mensaje/' ~ mensaje.imageName) }}" alt="Card image cap">
+                            {% endif %}
+
+
+                            {{ form_end(edit) }}
+
+
+                            {# <div class="card">
+                                 <div class="card-header">
+                                     <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                         <li class="nav-item">
+                                             <a class="nav-link active" data-toggle="tab" href="#home" role="tab"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                                         <li class="nav-item">
+                                             <a class="nav-link" data-toggle="tab" href="#messages" role="tab"><i class="far fa-image"aria-hidden="true"></i></a>
+                                         </li>
+
+                                     </ul>
+                                 </div>
+
+                                 <div class="card-block">
+                                     <div class="tab-content">
+                                         <div class="tab-pane active" id="home" role="tabpanel" aria-expanded="true">
+                                             <textarea class="form-control border-0 sinborde" id="exampleTextarea" rows="3" placeholder="Deja tu Estado" style="resize: none;"></textarea>
+                                         </div>
+
+                                         <div class="tab-pane" id="messages" role="tabpanel" aria-expanded="false">
+                                             <textarea class="form-control border-0 sinborde2" id="exampleTextarea" rows="3" placeholder="Comentar Foto" style="resize: none;"></textarea>
+                                             <div class="form-group">
+                                                 <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                                                 <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                                             </div>
+                                         </div>
+
+                                     </div>
+                                     <div class="divider"></div>
+                                     <br>
+                                     <a class="text-left collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></a>
+                                     <button type="button" class="btn btn-outline-primary btn-sm float-right">Publicar</button>
+                                 </div>
+
+
+                             </div>#}
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+            <div class="thirdCol">
+                <p>nose</p>
+            </div>
+        </div>
+    </div>
+
+    {% block javascripts %}
+
+    {% endblock %}
+
+{% endblock %}

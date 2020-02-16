@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+{% block body %}
+   {# {% for i in app.User  %}
+
+        <li>{{ i.getId() }}</li>
+    {% endfor %}#}
+<div class="wrapper">
+    <div class="flexContainer">
+        <div class="firstCol">
+
+
+            {% if user.imageName==null %}
+                <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+            {% else%}
+                <img src="{{ asset('imagenes/user/' ~ user.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:100px;">
+            {% endif %}
+            <i>{{ user.username }}</i>
+
+            <form class="card-footer text-muted center" method="POST" action="{{ path('userPerfil',{ 'id': user.username }) }}">
+                <input class="form-control mr-sm-   2" type="hidden" placeholder="buscar" aria-label="Search" name="Seguir" value="{{ user.getId() }}" >
+                {% if app.user.LoSigo(user)==false %}
+
+                    <button class="fas fa-user-plus" type="submit">seguir </button>
+                {%else  %}
+                    <button class="fas fa-user-minus" type="submit">dejar de seguir </button>
+                {% endif %}
+            </form>
+
+        </div>
+        <div class="secondCol">
+            <div class="innerFlex">
+
+
+
+    {% for mensaje in msg%}
+
+        <div class="col-12">
+            <div class="card mb-3">
+                <div class="card-block">
+                    <h4 class="card-title">
+                        {% if mensaje.user.imageName==null %}
+                            <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:50px;height: 50px;">
+                        {% else%}
+                            <img src="{{ asset('imagenes/user/' ~ mensaje.user.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="height: 45px;width:75px;">
+                        {% endif %}
+
+                        <a href="../perfil/{{ mensaje.user.username }}">{{ mensaje.user.username }}</a></h4>
+                    <p class="card-text">{{ mensaje.getInformacion() }}.</p>
+                    <i class="card-text"><small class="text-muted">{{ mensaje.fechaHora | date('d/m/Y H:i') }}</small></i>
+                </div>
+                {% if mensaje.imageName==null %}
+                {% else%}
+                    <img class="card-img-bottom" src="{{ asset('imagenes/mensaje/' ~ mensaje.imageName) }}" alt="Card image cap">
+                {% endif %}
+                <form class="card-footer text-muted center" method="POST" action="{{ path('miMuro') }}">
+                    <input class="form-control mr-sm-   2" type="hidden" placeholder="buscar" aria-label="Search" name="megusta" value="{{ mensaje.getId() }}" >
+
+
+
+                    {% if app.user.MegustaMensaje(mensaje)==false %}
+
+                        <button class="far fa-thumbs-up" type="submit" style="border: 2px solid lightgray; ">me gusta </button>({{ mensaje.meGustas }})
+
+                    {%else  %}
+
+                        <button class="fas fa-thumbs-up" type="submit" style="border: 2px solid deepskyblue;">me gusta </button>({{ mensaje.meGustas }})
+
+                    {% endif %}
+
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+    {% endfor %}
+            </div>
+        </div>
+        <div class="thirdCol">
+            <i style="text-align: center;color: white">usuarios que talvez conoscas</i>
+            <div class="innerFlex">
+                {% for noami in noamigos %}
+
+                    <div class="ca mb-3">
+                        {% if noami.imageName==null %}
+                            <img src="https://image.flaticon.com/icons/svg/72/72905.svg"  class="img-fluid rounded" alt="Responsive image rounded" style="width:50px;height: 50px;">
+                        {% else%}
+                            <img src="{{ asset('imagenes/user/' ~ noami.imageName) }}" class="img-fluid rounded" alt="Responsive image rounded" style="width:75px;height: 60px;">
+                        {% endif %}
+                        <a href="../perfil/{{ noami.username }}">{{ noami.username }}</a>
+                        <br>
+
+                    </div>
+
+                {% endfor %}
+            </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,582 @@
+/* A modified default Jekyll theme
+/*
+/* Improvements include:
+/*
+/* 1. Responsive Template: Added media-queries so that it works well
+/*    on a wide-range of screens.
+/*
+
+The MIT License (MIT)
+
+Copyright (c) 2013 Kashyap
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+/*****************************************************************************/
+/*
+/* Common
+/*
+/*****************************************************************************/
+/* Global Reset */
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body { height: 100%; }
+
+body {
+
+  font-size: 130%;
+  font-family: calluna, Calluna, Georgia;
+  font-weight: 300;
+  line-height: 1.55em;
+  text-rendering: optimizeLegibility;
+  color: #555;
+  padding-top: 60px;
+  background-image: url(http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #000918;
+  background-blend-mode: hard-light;
+}
+sinborde{
+  height:100px;
+}
+
+.sinborde2{
+  height:50px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  font-family: adelle, Adelle, Georgia;
+  font-weight: 800;
+  text-rendering: optimizeLegibility;
+}
+
+
+h1 {
+  font-size: 170%;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  line-height: 1.4em;
+}
+
+h2 {
+  font-size: 150%;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 130%;
+  margin-top: 3.25em;
+  margin-bottom: 0.5em;
+  line-height: 1.4em;
+}
+
+
+
+h4 {
+  font-size: 110%;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  line-height: 1.4em;
+}
+
+h5 {
+  font-size: 100%;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.4em;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: DodgerBlue;
+  flex-direction: row;
+}
+
+.flex-container > perfil {
+  background-color: #f1f1f1;
+
+  flex: 2;
+  margin: 10px;
+  height: 100px;
+  text-align: center;
+  line-height: 100%;
+
+}
+.flex-container > mensajes {
+  background-color: #f1f1f1;
+  flex: 4;
+  margin: 10px;
+
+  text-align: center;
+
+
+}
+h1new{
+  font-size: 300%;
+  margin: auto;
+  color: white;
+  text-align: center;
+  padding-top: 100px;
+
+
+}
+flex-container2{
+  display: flex;
+  flex-wrap: wrap;
+  background-color: DodgerBlue;
+  flex-direction: column;
+
+
+}
+.flex-container2 > mensaj {
+  background-color: #f1f1f1;
+
+  flex: 4;
+  margin: 10px;
+  text-align: center;
+
+
+}
+.flex-container > ayuda {
+  background-color: #f1f1f1;
+
+  flex: 1;
+  margin: 10px;
+
+  text-align: center;
+
+
+}
+
+body {
+  padding: 60px;
+  margin: 0;
+}
+.wrapper {
+  width: 100%;
+  margin-top: 10px;
+ align-items:  baseline;
+
+
+}
+.flexContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: start;
+  width: 100%;
+
+
+
+}
+
+.firstCol {
+  width: 23%;
+  padding: 6px;
+  order: 1;
+  border-radius: 20px 20px 20px 20px;
+  -moz-border-radius: 20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  border: 1px solid #130ceb;
+  background: linear-gradient(180deg, darkgray 50%, deepskyblue 50%);
+  color: white;
+
+}
+.secondCol {
+  display: flex; /*Add this*/
+  width: 60%;
+  order: 2;
+
+}
+.secondCol .innerFlex {
+  /*height: 100%; Remove this*/
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+
+}
+.secondCol .innerFlex .firstItem {
+  border-radius: 20px 20px 20px 20px;
+  -moz-border-radius: 20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  margin: 5px;
+  justify-content: space-between;
+  border: 1px solid #130ceb;
+  width: 100%;
+  order: 1;
+  color: white;
+  background: darkgray;
+}
+.secondCol .innerFlex .secondItem {
+  border: 1px solid #00f;
+  width: 100%;
+  aling-self: flex-end;
+  box-sizing: border-box;
+  display: block;
+  order: 2;
+  color: white;
+}
+.thirdCol {
+  width: 15%;
+
+  order: 3;
+}
+.card{
+  border-radius: 20px 20px 20px 20px;
+  -moz-border-radius: 20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  margin: 5px;
+  justify-content: space-between;
+  border: 1px solid #130ceb;
+  order: 1;
+  color: black;
+  background: whitesmoke;
+}
+
+.ca{
+  border-radius: 20px 20px 20px 20px;
+  -moz-border-radius: 20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  margin: 5px;
+  padding: 4px;
+  justify-content: space-between;
+  border: 1px solid #130ceb;
+  order: 1;
+  color: black;
+  background: whitesmoke;
+}
+
+.card-img-bottom {
+  height: 50%;
+  width: 100%;
+  border-bottom-right-radius: calc(.25rem - 1px);
+  border-bottom-left-radius: calc(.25rem - 1px);
+}
+
+
+a         { color: black;font-family:"Times New Roman"; }
+a:hover   { color: black;font-family:"Times New Roman"; }
+a:visited { color: black;font-family:"Times New Roman"; }
+
+
+blockquote {
+  padding: 0.1em 1.3em;
+  background: #fafafa;
+  border-left: 5px #81E26D solid;
+  color: #666;
+}
+/*****************************************************************************/
+/*
+/* Home
+/*
+/*****************************************************************************/
+ul.posts {
+  list-style-type: none;
+  margin-bottom: 2em;
+}
+
+ul.posts li {
+  line-height: 1.75em;
+  margin-bottom: 1em;
+}
+
+ul.posts span {
+  color: #aaa;
+  font-family: "Inconsolata", Consolas, "Courier New", monospace;
+  font-size: 80%;
+  display: list-item;
+}
+
+/*****************************************************************************/
+/*
+/* Site
+/*
+/*****************************************************************************/
+
+.site {
+  margin: auto;
+  max-width: 34em;
+  padding: 0 1em;
+  color: #333;
+}
+
+.site .header a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.site .header h1.title {
+  display: inline-block;
+  font-size: 180%;
+}
+
+.site .header h1.title a {
+  color: #a00;
+}
+
+.site .header h1.title a:hover {
+  color: #000;
+}
+
+.site .header a.extra {
+  color: #aaa;
+  margin-left: 1em;
+}
+
+.site .header a.extra:hover {
+  color: #000;
+}
+
+.site .meta {
+  color: #aaa;
+}
+
+.site .footer {
+  font-size: 80%;
+  color: #666;
+  border-top: 4px solid #eee;
+  margin-top: 2em;
+  overflow: hidden;
+}
+
+.site .footer .contact {
+  float: left;
+  margin-right: 3em;
+}
+
+.site .footer .contact a {
+  color: #8085C1;
+}
+
+.site .footer .rss {
+  margin-top: 1.1em;
+  margin-right: -.2em;
+  float: right;
+}
+
+.site .footer .rss img {
+  border: 0;
+}
+
+pre {
+  font-family: 'PT Mono', Consolas, "Inconsolata", "Courier New", monospace;
+  overflow: auto;
+  margin: 1em auto;
+}
+
+code {
+  font-family: 'PT Mono', Consolas, "Inconsolata", "Courier New", monospace;
+}
+
+
+/*****************************************************************************/
+/*
+/* Posts
+/*
+/*****************************************************************************/
+
+/* standard */
+.post pre {
+  border: 1px solid #ddd;
+  background-color: #eef;
+  line-height: 1em;
+  padding: 0.2em 0.5em;
+}
+
+.post ul, .post ol {
+  margin-left: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.post code {
+  border: 1px solid #ddd;
+  background-color: #eef;
+  font-size: 0.7em;
+
+}
+
+.post pre code {
+  border: none;
+}
+
+/* terminal */
+.post pre.terminal {
+  border: 1px solid #000;
+  background-color: #333;
+  color: #FFF;
+}
+
+.post pre.terminal code {
+  background-color: #333;
+}
+
+.post {
+  text-align: justify;
+}
+
+/************************************************************************/
+/*    Media Queries
+/*
+/************************************************************************/
+
+
+
+
+@media screen and (max-width: 1000px) {
+  body {
+    font-size: 130%;
+
+  }
+  .post code {
+    font-size: 85%;
+  }
+
+  pre code {
+    line-height: 1.6em;
+  }
+
+}
+
+@media screen and (max-width: 900px) {
+  body {
+    font-size: 125%;
+
+  }
+
+  .post code {
+    font-size: 80%;
+  }
+
+  pre code {
+    font-size: 80%;
+  }
+  .flexContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+
+
+
+  }
+  .firstCol {
+    width: 100%;
+    padding: 6px;
+    order: 1;
+    border-radius: 20px 20px 20px 20px;
+    -moz-border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+    border: 1px solid #130ceb;
+    background: linear-gradient(180deg, darkgray 50%, deepskyblue 50%);
+    color: white;
+
+  }
+  .secondCol {
+    display: flex; /*Add this*/
+    width: 100%;
+    order: 3;
+
+  }
+  .secondCol .innerFlex {
+    /*height: 100%; Remove this*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+
+  }
+
+  .thirdCol {
+    width: 100%;
+
+    order: 2;
+  }
+  .thirdCol .innerFlex {
+    /*height: 100%; Remove this*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    box-sizing: border-box;
+
+  }
+  .ca{
+    border-radius: 20px 20px 20px 20px;
+    -moz-border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+
+    justify-content: space-between;
+    border: 1px solid #130ceb;
+    width: 33%;
+    order: 1;
+    padding: 4px;
+    color: black;
+    background: whitesmoke;
+  }
+}
+
+
+@media screen and (max-width: 500px) {
+  body {
+    font-size: 120%;
+
+  }
+
+  .footer {
+    text-align: center;
+    padding: 1em;
+  }
+
+  .contact {
+    width: 100%;
+  }
+
+  .post code {
+    font-size: 85%;
+  }
+
+}
+
+@media screen and (max-width: 320px) {
+  body {
+
+  }
+}

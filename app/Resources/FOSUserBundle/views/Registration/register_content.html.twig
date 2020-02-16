@@ -1,0 +1,22 @@
+{% trans_default_domain 'FOSUB' %}
+
+
+
+
+            <div class="col-12">
+                    <div class="card mb-3">
+                        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+                        {{ form_widget(form) }}
+                        <div>
+
+                            <input type="submit" value="registrarme" />
+                        </div>
+                        {{ form_end(form) }}
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
