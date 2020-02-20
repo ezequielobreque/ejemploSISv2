@@ -25,6 +25,7 @@
         "nelmio/cors-bundle": "^1.5",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
+        "symfony-bundles/json-request-bundle": "^1.2",
         "symfony/form": "^3.4",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",

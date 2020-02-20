@@ -51,4 +51,4 @@ security:
                 - {path: ^/mimuro , role: ROLE_USER}
                 - {path: ^/miperfil , role: ROLE_USER}
                 - { path: ^/admin/, role: ROLE_USER }
-                - { path: ^/api/, role: IS_AUTHENTICATED_FULLY }
+                - { path: ^/api/sec/, role: IS_AUTHENTICATED_FULLY }
