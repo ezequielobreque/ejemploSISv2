@@ -1,6 +1,9 @@
 AppBundle\Entity\Mensaje:
     exclusion_policy: ALL
     properties:
+        id:
+            expose: true
+            groups: ['list']
         informacion:
             expose: true
             groups: ['list']
