@@ -88,12 +88,12 @@ vich_uploader:
     mappings:
         imagen_usuario:
             uri_prefix: /imagenes/user
-            upload_destination: '%kernel.project_dir%/web/imagenes/user'
+            upload_destination: '%kernel.project_dir%/public/imagenes/user'
 
 
         imagen_mensaje:
             uri_prefix: /imagenes/mensaje
-            upload_destination: '%kernel.project_dir%/web/imagenes/mensaje'
+            upload_destination: '%kernel.project_dir%/public/imagenes/mensaje'
 
 fos_rest:
     routing_loader:

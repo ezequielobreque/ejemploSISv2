@@ -26,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM;
 use Symfony\Component\HttpFoundation\Response;
+use Vich\UploaderBundle\VichUploaderBundle;
 
 
 class ApiController extends FOSRestController
@@ -37,19 +38,19 @@ class ApiController extends FOSRestController
 
 
     /**
-     * @Route("/api")
-     */
+ * @Route("/api")
+ */
     public function indexAction(Request $request)
     {
-      /*  $manager= $this->getDoctrine()->getManager();
+        /*  $manager= $this->getDoctrine()->getManager();
 
-        $nuevoUsuario=new User();
-        $nuevoUsuario ->setUsername('x');
-        $nuevoUsuario->setPlainPassword('o');
-        $nuevoUsuario->setEmail('camioner@gmail.com');
-        $nuevoUsuario ->setEnabled(1);
-        $manager->persist($nuevoUsuario);
-        $manager->flush();*/
+          $nuevoUsuario=new User();
+          $nuevoUsuario ->setUsername('x');
+          $nuevoUsuario->setPlainPassword('o');
+          $nuevoUsuario->setEmail('camioner@gmail.com');
+          $nuevoUsuario ->setEnabled(1);
+          $manager->persist($nuevoUsuario);
+          $manager->flush();*/
 
 
         $data = array('mensaje'=>$request->get('username'));
@@ -58,10 +59,30 @@ class ApiController extends FOSRestController
         return $this->handleView($view);
 
 
-      /*  $data = array("hello" => "world");
-        $view = $this->view($data);
-        return $this->handleView($view);*/
+        /*  $data = array("hello" => "world");
+          $view = $this->view($data);
+          return $this->handleView($view);*/
     }
+
+    /**
+     * @Route("/api/sec/usuario" , name="usuarioapp")
+     */
+    public function usuarioAppAction()
+    {
+        $usuario=$this->getUser();
+
+        $view = $this->view(array('user'=>$usuario));
+        return $this->handleView($view);
+
+
+        /*  $data = array("hello" => "world");
+          $view = $this->view($data);
+          return $this->handleView($view);*/
+    }
+
+
+
+
 
     /**
      * @Route("/api/signup" , name="signup")
@@ -137,6 +158,205 @@ class ApiController extends FOSRestController
 
 
     }
+
+    /**
+     * @Route("/api/sec/mismensajes", name="mismensajes")
+     */
+    public function mismensajesAction()
+    {
+
+        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+        if (!$auth) {
+            throw new AccessDeniedException();
+        }
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();*/
+
+
+        $token=$this->getUser()->getId();
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        $qb = $entityManager->createQueryBuilder()
+
+            ->select('m')
+            ->from('AppBundle:Mensaje', 'm')
+            ->join('m.user', 'u')
+            ->where('u.id = :ids')
+            ->orderBy('m.fechaHora', 'DESC')
+            ->setParameter('ids', $this->getUser()->getId());
+
+        $query = $qb->getQuery()->getResult(); //->execute();
+
+
+        $view = $this->view($query);
+
+
+        $view->getContext()->setGroups(['default','list']);
+        return $this->handleView($view);
+
+        // $view->setSerializerGruops(array('list'));
+
+
+    }
+
+
+    /**
+     * @Route("/api/sec/editarmensaje/{id}", name="editarmensaje")
+     */
+    public function editarMensajeAction(String $id,Request $request)
+    {
+
+        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+        if (!$auth) {
+            throw new AccessDeniedException();
+        }
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();*/
+
+
+        $user=$this->getUser();
+
+
+
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $qb= $entityManager->createQueryBuilder();
+        $qb->select('m')
+            ->from('AppBundle:Mensaje', 'm')
+            ->where('m.id = :ids')
+            ->setParameter('ids', $id);
+
+        $query = $qb->getQuery();
+        $mensa=$query->getResult();
+
+        $lista= $user->getMensajes();
+        $actualizado='mensaje no encontrado';
+        if($mensa!=null){
+            foreach($lista as $value){
+                if($value->getid()==$mensa[0]->getId()){
+                    $value->setInformacion($request->get('informacion'));
+                    $entityManager->persist($value);
+                    $entityManager->flush();
+                    $actualizado='mensaje actualizado';
+                }
+            }}
+
+
+
+        $data = array('mensaje'=>$actualizado);
+        $view = $this->view($data);
+        return $this->handleView($view);
+
+        // $view->setSerializerGruops(array('list'));
+
+
+    }
+
+
+
+
+    /**
+     * @Route("/api/sec/crearmensaje", name="crearmensaje")
+     */
+    public function crearMensajeAction(Request $request)
+    {
+
+        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+        if (!$auth) {
+            throw new AccessDeniedException();
+        }
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();*/
+
+
+
+        $user=$this->getUser();
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+
+        //$this->createForm(new PostType(), $entity, array("method" => $request->getMethod()))->add('imageFile','file');
+
+
+        $nuevoMensaje=new Mensaje($request->get('informacion'));
+
+        $file = $request->files->get('imagefile');
+
+        $nuevoMensaje->setImageFile($file);
+        $nuevoMensaje->setUser($user);
+        $user->addMensaje($nuevoMensaje);
+        $entityManager->persist($nuevoMensaje , $user);
+        $entityManager->flush();
+
+
+        $data = array('mensaje'=>$nuevoMensaje);
+        $view = $this->view($data);
+        return $this->handleView($view);
+
+        // $view->setSerializerGruops(array('list'));
+
+
+    }
+    /**
+     * @Route("/api/sec/editarmensaje2/{id}", name="editarmensaje2")
+     */
+    public function editarMensaje2Action(String $id,Request $request)
+    {
+
+        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+        if (!$auth) {
+            throw new AccessDeniedException();
+        }
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();*/
+
+
+        $user=$this->getUser();
+
+
+
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $qb= $entityManager->createQueryBuilder();
+        $qb->select('m')
+            ->from('AppBundle:Mensaje', 'm')
+            ->where('m.id = :ids')
+            ->setParameter('ids', $id);
+
+        $query = $qb->getQuery();
+        $mensa=$query->getResult();
+
+        $lista= $user->getMensajes();
+        $actualizado='mensaje no encontrado';
+        if($mensa!=null){
+        foreach($lista as $value){
+            if($value->getid()==$mensa[0]->getId()){
+                $value->setInformacion($request->get('informacion'));
+                $entityManager->persist($value);
+                $entityManager->flush();
+                $actualizado='mensaje actualizado';
+            }
+        }}
+
+
+
+        $data = array('mensaje'=>$actualizado);
+        $view = $this->view($data);
+        return $this->handleView($view);
+
+        // $view->setSerializerGruops(array('list'));
+
+
+    }
+
+
 
     /**
      * @Route("/api/sec/mensajes", name="devolverMensajes")
