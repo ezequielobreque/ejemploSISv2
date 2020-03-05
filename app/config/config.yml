@@ -89,11 +89,14 @@ vich_uploader:
         imagen_usuario:
             uri_prefix: /imagenes/user
             upload_destination: '%kernel.project_dir%/public/imagenes/user'
-
+            namer:
+                service: vich_uploader.namer_origname
 
         imagen_mensaje:
             uri_prefix: /imagenes/mensaje
             upload_destination: '%kernel.project_dir%/public/imagenes/mensaje'
+            namer:
+                service: vich_uploader.namer_origname
 
 fos_rest:
     routing_loader:
