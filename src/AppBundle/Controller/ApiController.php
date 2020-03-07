@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\RestBundle\Controller\Annotations\Route;
@@ -433,6 +434,9 @@ class ApiController extends FOSRestController
 
     }
 
+
+
+
     /**
      * @Route("/api/sec/busquedas/usuarios", name="busquedas_api_usuarios")
      */
@@ -444,7 +448,6 @@ class ApiController extends FOSRestController
             ->from('AppBundle:User', 'p');
 
         $busqueda = $request->get('busqueda');
-
         if ($busqueda) {
             $qb->where($qb->expr()->like('p.username', '?1'))
                 ->setParameter(1, '%' . $busqueda . '%');
@@ -459,7 +462,7 @@ class ApiController extends FOSRestController
 
         // $view->setSerializerGruops(array('list'));
 
-        return $this->handleView($view);
+        return $this->handleView($view);;
     }
 
 
