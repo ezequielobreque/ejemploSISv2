@@ -16,3 +16,6 @@ AppBundle\Entity\Mensaje:
         imageName:
             expose: true
             groups: ['list']
+        meGustas:
+            expose: true
+            groups: ['list']

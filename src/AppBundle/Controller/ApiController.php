@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Types\IntegerType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -464,6 +465,53 @@ class ApiController extends FOSRestController
 
         return $this->handleView($view);;
     }
+
+
+    /**
+     * @Route("/api/sec/megusta/{id}", name="megustamensaje")
+     */
+    public function MegustaAction(String $id)
+    {
+         $user=$this->getUser();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder('p');
+        $qb->select('m')
+
+            ->from('AppBundle:Mensaje', 'm');
+        Int: $busqueda =  $id;
+
+        if ($busqueda) {
+            $qb->where('m.id= :id')
+                ->setParameter('id',$busqueda);
+            $resultados = $qb->getQuery()->getResult();
+
+            if(in_array($this->getUser(),$resultados[0]->getMegusta()->toArray())){
+
+                $resultados[0]->sacarMeGusta($this->getUser());
+                $entityManager->flush();
+            }
+
+            else{
+
+                $resultados[0]->addMeGusta($this->getUser());
+                $entityManager->flush();
+            }
+
+
+        }
+
+        $view = $this->view($resultados);
+
+        $view->getContext()->setGroups(['default','list']);
+
+        // $view->setSerializerGruops(array('list'));
+
+        return $this->handleView($view);;
+    }
+
+    /**/
+
 
 
 }
