@@ -273,16 +273,6 @@ class ApiController extends FOSRestController
      */
     public function crearMensajeAction(Request $request)
     {
-
-        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
-        if (!$auth) {
-            throw new AccessDeniedException();
-        }
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();*/
-
-
-
         $user=$this->getUser();
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -312,20 +302,14 @@ class ApiController extends FOSRestController
 
     }
     /**
-     * @Route("/api/sec/editarmensaje2/{id}", name="editarmensaje2")
+     * @Route("/api/sec/eliminarMensaje/{id}", name="editarmensaje2")
      */
-    public function editarMensaje2Action(String $id,Request $request)
+    public function eliminarMensajeAction(String $id,Request $request)
     {
 
-        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
-        if (!$auth) {
-            throw new AccessDeniedException();
-        }
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();*/
 
 
-        $user=$this->getUser();
+
 
 
 
@@ -339,28 +323,23 @@ class ApiController extends FOSRestController
             ->where('m.id = :ids')
             ->setParameter('ids', $id);
 
+
+
         $query = $qb->getQuery();
         $mensa=$query->getResult();
-
-        $lista= $user->getMensajes();
-        $actualizado='mensaje no encontrado';
-        if($mensa!=null){
-        foreach($lista as $value){
-            if($value->getid()==$mensa[0]->getId()){
-                $value->setInformacion($request->get('informacion'));
-                $entityManager->persist($value);
-                $entityManager->flush();
-                $actualizado='mensaje actualizado';
-            }
-        }}
+        $mensaje=$mensa[0];
 
 
 
-        $data = array('mensaje'=>$actualizado);
+
+            $entityManager->remove($mensaje);
+            $entityManager->flush();
+
+
+
+        $data = array('mensaje'=>'Dato borrado');
         $view = $this->view($data);
         return $this->handleView($view);
-
-        // $view->setSerializerGruops(array('list'));
 
 
     }
@@ -425,7 +404,7 @@ class ApiController extends FOSRestController
             ->from('AppBundle:Mensaje', 'm')
             ->join('m.user', 'u')
             ->where('u.id = :id')
-            ->orderBy('m.fechaHora', 'DESC')
+            ->orderBy('m.fechaHora' , 'DESC')
             ->setParameter('id', $identificador);
 
         $query = $qb->getQuery();
