@@ -241,6 +241,13 @@ class ApiController extends FOSRestController
             foreach($lista as $value){
                 if($value->getid()==$mensa[0]->getId()){
                     $value->setInformacion($request->get('informacion'));
+                    if($request->files->get('imagefile')!=null){
+
+                        $file = $request->files->get('imagefile');
+
+                        $value->setImageFile($file);
+                    }
+
                     $entityManager->persist($value);
                     $entityManager->flush();
                     $actualizado='mensaje actualizado';
@@ -411,14 +418,15 @@ class ApiController extends FOSRestController
 
         $entityManager = $this->getDoctrine()->getManager();
 
+        int:$identificador=$user;
 
         $qb= $entityManager->createQueryBuilder();
         $qb->select('m')
             ->from('AppBundle:Mensaje', 'm')
             ->join('m.user', 'u')
-            ->where('u.username = :user')
+            ->where('u.id = :id')
             ->orderBy('m.fechaHora', 'DESC')
-            ->setParameter('user', $user);
+            ->setParameter('id', $identificador);
 
         $query = $qb->getQuery();
 
@@ -426,6 +434,7 @@ class ApiController extends FOSRestController
 
 
         $view = $this->view($result);
+
 
         $view->getContext()->setGroups(['default','list']);
 
