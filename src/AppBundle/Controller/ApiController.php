@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Controller;
+use AppBundle\AppBundle;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Types\IntegerType;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -113,7 +114,7 @@ class ApiController extends FOSRestController
     /**
      * @Route("/api/sec/mimuro", name="mimuro")
     */
-    public function mimuroAction()
+    public function mimuroAction(Request $request)
     {
 
         /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
@@ -123,7 +124,7 @@ class ApiController extends FOSRestController
 
         $user = $this->get('security.token_storage')->getToken()->getUser();*/
 
-
+        $paginator  = $this->get('knp_paginator');
         $token=$this->getUser()->getId();
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -147,13 +148,18 @@ class ApiController extends FOSRestController
             ->orderBy('m.fechaHora','DESC')
             ->setParameter('ids', $followsId);
 
-        $query = $qb->getQuery()->getResult(); //->execute();
+        $query = $qb->getQuery(); //->execute();
+
+        $paginado = $paginator->paginate(
+            $query,
+            $request->get('page',1),
+
+            $request->get('limit',10)
+        );
+        $view = $this->view($paginado);
 
 
-        $view = $this->view($query);
-
-
-        $view->getContext()->setGroups(['default','list']);
+       // $view->getContext()->setGroups(['default','list']);
         return $this->handleView($view);
 
         // $view->setSerializerGruops(array('list'));
@@ -288,6 +294,7 @@ class ApiController extends FOSRestController
 
         $nuevoMensaje->setImageFile($file);
         $nuevoMensaje->setUser($user);
+
         $user->addMensaje($nuevoMensaje);
         $entityManager->persist($nuevoMensaje , $user);
         $entityManager->flush();
@@ -311,10 +318,6 @@ class ApiController extends FOSRestController
 
 
 
-
-
-
-
         $entityManager = $this->getDoctrine()->getManager();
 
         $qb= $entityManager->createQueryBuilder();
@@ -327,8 +330,7 @@ class ApiController extends FOSRestController
 
         $query = $qb->getQuery();
         $mensa=$query->getResult();
-        $mensaje=$mensa[0];
-
+        $mensaje= $mensa[0];
 
 
 
