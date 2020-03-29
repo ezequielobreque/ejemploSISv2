@@ -153,7 +153,6 @@ class ApiController extends FOSRestController
         $paginado = $paginator->paginate(
             $query,
             $request->get('page',1),
-
             $request->get('limit',10)
         );
         $view = $this->view($paginado);
@@ -170,7 +169,7 @@ class ApiController extends FOSRestController
     /**
      * @Route("/api/sec/mismensajes", name="mismensajes")
      */
-    public function mismensajesAction()
+    public function mismensajesAction(Request $request)
     {
 
         /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
@@ -180,14 +179,11 @@ class ApiController extends FOSRestController
 
         $user = $this->get('security.token_storage')->getToken()->getUser();*/
 
-
-        $token=$this->getUser()->getId();
-
+        $paginator  = $this->get('knp_paginator');
         $entityManager = $this->getDoctrine()->getManager();
 
 
         $qb = $entityManager->createQueryBuilder()
-
             ->select('m')
             ->from('AppBundle:Mensaje', 'm')
             ->join('m.user', 'u')
@@ -195,13 +191,15 @@ class ApiController extends FOSRestController
             ->orderBy('m.fechaHora', 'DESC')
             ->setParameter('ids', $this->getUser()->getId());
 
-        $query = $qb->getQuery()->getResult(); //->execute();
+        $query = $qb->getQuery(); //->execute();
 
+        $paginado = $paginator->paginate(
+            $query,
+            $request->get('page',1),
+            $request->get('limit',10)
+        );
+        $view = $this->view($paginado);
 
-        $view = $this->view($query);
-
-
-        $view->getContext()->setGroups(['default','list']);
         return $this->handleView($view);
 
         // $view->setSerializerGruops(array('list'));
@@ -304,6 +302,8 @@ class ApiController extends FOSRestController
         $view = $this->view($data);
         return $this->handleView($view);
 
+
+
         // $view->setSerializerGruops(array('list'));
 
 
@@ -391,11 +391,13 @@ class ApiController extends FOSRestController
 
      *
      */
-    public function MensajeUserAction(String $user)
+    public function MensajeUserAction(Request $request,String $user)
     {
 
 
 
+
+        $paginator  = $this->get('knp_paginator');
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -411,17 +413,24 @@ class ApiController extends FOSRestController
 
         $query = $qb->getQuery();
 
-        $result =$query->getResult();
+        $paginado = $paginator->paginate(
+            $query,
+            $request->get('page',1),
+            $request->get('limit',10)
+        );
+        $view = $this->view($paginado);
+
+        return $this->handleView($view);
 
 
-        $view = $this->view($result);
+        /*$view = $this->view($result);
 
 
         $view->getContext()->setGroups(['default','list']);
 
         // $view->setSerializerGruops(array('list'));
 
-        return $this->handleView($view);
+        return $this->handleView($view);*/
 
     }
 
@@ -490,6 +499,12 @@ class ApiController extends FOSRestController
 
 
         }
+
+
+
+
+
+
 
         $view = $this->view($resultados);
 
