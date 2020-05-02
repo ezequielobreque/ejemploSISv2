@@ -167,6 +167,70 @@ class ApiController extends FOSRestController
     }
 
     /**
+     * @Route("/api/sec/amigos", name="amigos")
+     */
+    public function misAmgiosAction(Request $request)
+    {
+
+        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+        if (!$auth) {
+            throw new AccessDeniedException();
+        }
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();*/
+
+        $paginator  = $this->get('knp_paginator');
+        $token=$this->getUser()->getId();
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+
+        $followsId = $entityManager->createQueryBuilder()
+            ->select('seg.id')
+            ->from('AppBundle:User', 'u')
+            ->join('u.losQueSigo', 'seg')
+            ->where('u.id = :id')
+            ->setParameter("id", $token)
+            ->getQuery()
+            ->execute();
+
+        $qb = $entityManager->createQueryBuilder()
+            ->select('seg.id')
+            ->from('AppBundle:User', 'u')
+            ->join('u.losQueSigo', 'seg')
+            ->where('u.id IN(:ids)')
+            ->setParameter('ids', $followsId)
+            ->groupBy('seg.id')
+            ->getQuery()
+            ->execute();
+
+        $qb2 = $entityManager->createQueryBuilder()
+            ->select('u')
+            ->from('AppBundle:User', 'u')
+            ->where('u.id IN(:ids)')
+            ->setParameter('ids', $qb)
+            ->getQuery();
+
+
+
+        $paginado = $paginator->paginate(
+            $qb2,
+            $request->get('page',1),
+            $request->get('limit',10)
+        );
+        $view = $this->view($paginado);
+
+
+        // $view->getContext()->setGroups(['default','list']);
+        return $this->handleView($view);
+
+        // $view->setSerializerGruops(array('list'));
+
+
+    }
+
+    /**
      * @Route("/api/sec/mismensajes", name="mismensajes")
      */
     public function mismensajesAction(Request $request)
