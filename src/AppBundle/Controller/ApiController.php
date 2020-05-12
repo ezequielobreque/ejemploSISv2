@@ -195,7 +195,7 @@ class ApiController extends FOSRestController
             ->getQuery()
             ->execute();
 
-        $qb = $entityManager->createQueryBuilder()
+        $query = $entityManager->createQueryBuilder()
             ->select('seg.id')
             ->from('AppBundle:User', 'u')
             ->join('u.losQueSigo', 'seg')
@@ -205,17 +205,21 @@ class ApiController extends FOSRestController
             ->getQuery()
             ->execute();
 
-        $qb2 = $entityManager->createQueryBuilder()
-            ->select('u')
+        $qb = $entityManager->createQueryBuilder();
+
+         $qb->select('u')
             ->from('AppBundle:User', 'u')
-            ->where('u.id IN(:ids)')
-            ->setParameter('ids', $qb)
+            ->where($qb->expr()->andX(
+                $qb->expr()->in('u.id',':ids'),
+                $qb->expr()->notIn('u.id', ':mi')
+            ))
+            ->setParameters(array('ids' => $query, 'mi' => $followsId))
             ->getQuery();
 
 
 
         $paginado = $paginator->paginate(
-            $qb2,
+            $qb,
             $request->get('page',1),
             $request->get('limit',10)
         );
