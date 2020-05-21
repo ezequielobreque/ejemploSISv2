@@ -292,10 +292,6 @@ class ApiController extends FOSRestController
 
         $user=$this->getUser();
 
-
-
-
-
         $entityManager = $this->getDoctrine()->getManager();
 
         $qb= $entityManager->createQueryBuilder();
@@ -303,6 +299,8 @@ class ApiController extends FOSRestController
             ->from('AppBundle:Mensaje', 'm')
             ->where('m.id = :ids')
             ->setParameter('ids', $id);
+
+
 
         $query = $qb->getQuery();
         $mensa=$query->getResult();
@@ -413,7 +411,49 @@ class ApiController extends FOSRestController
 
 
     }
+    /**
+     * @Route("/api/sec/seguiramigo/{id}", name="seguirAmigo")
+     *
+     */
+    public function seguirAmigo(Request $request,String $id){
+    $entityManager = $this->getDoctrine()->getManager();
 
+        $qb= $entityManager->createQueryBuilder();
+        $qb->select('u')
+            ->from('AppBundle:User', 'u')
+            ->where('u.id = :ids')
+            ->setParameter('ids', $id);
+
+        $var=true;
+
+        $qb = $qb->getQuery()->getResult();
+        if (in_array($qb[0], $this->getUser()->getLosQueSigo()->toArray())) {
+        $var=false;
+        $this->getUser()->dejarSeguir($qb[0]);
+        $entityManager->flush();
+        } else {
+            $var=true;
+            $this->getUser()->addSeguir($qb[0]);
+            $entityManager->flush();
+        }
+        $data = array('loSigo'=>$var);
+        $view = $this->view($data);
+        return $this->handleView($view);
+
+        }
+
+    /**
+     * @Route("/api/sec/seguidos", name="Seguidos")
+     *
+     */
+    public function Seguidos(Request $request){
+
+        $var=$this->getUser()->getLosQueSigo();
+
+        $view = $this->view($var);
+        return $this->handleView($view);
+
+    }
 
 
     /**
