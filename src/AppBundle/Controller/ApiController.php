@@ -311,11 +311,14 @@ class ApiController extends FOSRestController
             foreach($lista as $value){
                 if($value->getid()==$mensa[0]->getId()){
                     $value->setInformacion($request->get('informacion'));
-                    if($request->files->get('imagefile')!=null){
+
+                   if($request->files->get('imagefile')!=null){
 
                         $file = $request->files->get('imagefile');
 
                         $value->setImageFile($file);
+                    }else if($request->get('imagename')=='null') {
+                        $value->setImageName(null);
                     }
 
                     $entityManager->persist($value);
