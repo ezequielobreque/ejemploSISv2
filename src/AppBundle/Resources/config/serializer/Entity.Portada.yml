@@ -1,15 +1,10 @@
-AppBundle\Entity\User:
+AppBundle\Entity\Portada:
     exclusion_policy: ALL
     properties:
-        username:
-            expose: true
-            groups: ['list']
         id:
             expose: true
             groups: ['list']
         imageName:
             expose: true
             groups: ['list']
-        Portada:
-            expose: true
-            groups: ['list']
+

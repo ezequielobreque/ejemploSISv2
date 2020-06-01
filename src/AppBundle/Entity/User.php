@@ -7,6 +7,8 @@
  */
 
 namespace AppBundle\Entity;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToOne;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -60,6 +62,12 @@ class User extends BaseUser
      */
     private $imageFile;
 
+    /**
+     * One User has One Portada
+     * @OneToOne(targetEntity="Portada",cascade={"persist"})
+     * @JoinColumn(name="Portada_id", referencedColumnName="id",nullable=true)
+     */
+    protected $Portada;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
@@ -257,6 +265,16 @@ class User extends BaseUser
     public function getLosQueSigo()
     {
         return $this->losQueSigo;
+    }
+
+    public function getPortada()
+    {
+     return $this->Portada;
+    }
+
+    public function setPortada(Portada $portada)
+    {
+        return $this->Portada=$portada;
     }
 
 

@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\RestBundle\Controller\Annotations\Route;
 use AppBundle\Entity\Mensaje;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Portada;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -67,14 +68,47 @@ class ApiController extends FOSRestController
           return $this->handleView($view);*/
     }
 
+
+    /**
+     * @Route("/api/esta")
+     */
+   public function estaAction(Request $request)
+    {
+        /*  $manager= $this->getDoctrine()->getManager();
+
+          $nuevoUsuario=new User();
+          $nuevoUsuario ->setUsername('x');
+          $nuevoUsuario->setPlainPassword('o');
+          $nuevoUsuario->setEmail('camioner@gmail.com');
+          $nuevoUsuario ->setEnabled(1);
+          $manager->persist($nuevoUsuario);
+          $manager->flush();*/
+        $manager= $this->getDoctrine()->getManager();
+        $nuevoUsuario=$this->getUser();
+        $nuevaPortada=new Portada();
+        $nuevoUsuario->setPortada($nuevaPortada);
+        $nuevaPortada->setUser($nuevoUsuario);
+        $manager->persist($nuevoUsuario,$nuevaPortada);
+        $manager->flush();
+        $data = array('mensaje'=>'terminado');
+        $view = $this->view($data);
+
+        return $this->handleView($view);
+
+
+        /*  $data = array("hello" => "world");
+          $view = $this->view($data);
+          return $this->handleView($view);*/
+    }
+
     /**
      * @Route("/api/sec/usuario" , name="usuarioapp")
      */
     public function usuarioAppAction()
     {
         $usuario=$this->getUser();
-
-        $view = $this->view(array('user'=>$usuario));
+        $portada=$usuario->getPortada();
+        $view = $this->view(array('user'=>$usuario,'portada'=>$portada));
         return $this->handleView($view);
 
 
@@ -98,11 +132,15 @@ class ApiController extends FOSRestController
 
 
         $nuevoUsuario=new User();
+        $nuevaPortada=new Portada();
         $nuevoUsuario ->setUsername($request->get('username'));
         $nuevoUsuario->setPlainPassword($request->get('password'));
         $nuevoUsuario->setEmail($request->get('email'));
         $nuevoUsuario ->setEnabled(1);
+        $nuevoUsuario->setPortada($nuevaPortada);
+        $nuevaPortada->setUser($nuevoUsuario);
         $manager->persist($nuevoUsuario);
+        $manager->persist($nuevaPortada);
         $manager->flush();
 
 
@@ -370,22 +408,95 @@ class ApiController extends FOSRestController
         $data = array('mensaje'=>$nuevoMensaje);
         $view = $this->view($data);
         return $this->handleView($view);
-
-
-
         // $view->setSerializerGruops(array('list'));
 
 
     }
+
+    /**
+     * @Route("/api/sec/editarperfil", name="editarPerfil")
+     */
+    public function editarPefilAction(Request $request)
+    {
+        /*$auth = $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+         if (!$auth) {
+             throw new AccessDeniedException();
+         }
+
+         $user = $this->get('security.token_storage')->getToken()->getUser();*/
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user=$this->getUser();
+
+        $portada=$user->getPortada();
+           if($request->get('username')!=null);
+        {
+            $user->setUsername($request->get('username'));
+        }
+
+        if($request->get('email')!=null);
+        {
+            $user->setEmail($request->get('email'));
+        }
+        if($request->files->get('imageportada')!=null){
+
+            $filep = $request->files->get('imageportada');
+
+            $portada->setImageFile($filep);
+        }else if($request->get('imagenameportada')=='null') {
+            $portada->setImageName(null);
+        }
+
+       if($request->files->get('imageuser')!=null){
+
+            $fileu = $request->files->get('imageuser');
+
+            $user->setImageFile($fileu);
+        }else if($request->get('imagenameuser')=='null') {
+            $user->setImageName(null);
+        }
+
+            $entityManager->persist($portada);
+            $entityManager->persist($user);
+             $entityManager->flush();
+             $actualizado='perfil actualizado';
+
+
+
+        /*
+                if($value->getid()==$mensa[0]->getId()){
+                    $value->setInformacion($request->get('informacion'));
+
+                    if($request->files->get('imagefile')!=null){
+
+                        $file = $request->files->get('imagefile');
+
+                        $value->setImageFile($file);
+                    }else if($request->get('imagename')=='null') {
+                        $value->setImageName(null);
+                    }
+
+                    $entityManager->persist($value);
+                    $entityManager->flush();
+                    $actualizado='mensaje actualizado';
+                }
+            }}*/
+
+
+
+        $data = array('perfil'=>$actualizado);
+        $view = $this->view($data);
+        return $this->handleView($view);
+
+
+    }
+
+
     /**
      * @Route("/api/sec/eliminarMensaje/{id}", name="editarmensaje2")
      */
     public function eliminarMensajeAction(String $id,Request $request)
     {
-
-
-
-
 
         $entityManager = $this->getDoctrine()->getManager();
 

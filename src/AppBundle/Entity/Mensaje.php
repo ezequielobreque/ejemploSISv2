@@ -64,6 +64,7 @@ class Mensaje
      */
     private $imageName;
 
+
     /**
      * @ORM\Column(type="integer",nullable=true)
      *
@@ -78,6 +79,19 @@ class Mensaje
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="float",nullable=true)
+     *
+     * @var float
+     */
+    private $longitud;
+
+    /**
+     * @ORM\Column(type="float",nullable=true)
+     *
+     * @var float
+     */
+    private $latitud;
 
 
 
