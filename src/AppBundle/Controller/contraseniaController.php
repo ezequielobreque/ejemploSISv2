@@ -30,25 +30,23 @@ class contraseniaController extends controller
     {
 
         $user = $this->getUser();
-        $newPasswordPlain = 'newpassword';
-        $currentPasswordForValidation = 'test';
+        $newPasswordPlain = 'test';
+        $currentPasswordForValidation = 'test2';
 
         $encoder_service = $this->get('security.encoder_factory');
         $encoder = $encoder_service->getEncoder($user);
         $encodedPassword = $encoder->isPasswordValid($user->getPassword(),$currentPasswordForValidation,$user->getSalt());
 
-        var_dump( $encodedPassword);
-        var_dump( $user->getPassword());
-
         if ( $user->getPassword() == $encodedPassword ) {
             $userManager = $this->container->get('fos_user.user_manager');
             $user->setPlainPassword($newPasswordPlain);
             $userManager->updateUser($user, true);
+            var_dump('perfecto actualizado');exit;
         } else {
-            var_dump('error: not the same password'); exit;
+            var_dump('error: not the same password');exit;
         }
 
-        return $this->render('contraseña/cambiar_contraseña.html.twig', ['form'=>$form]);
+        return $this->render('contraseña/cambiar_contraseña.html.twig', []);
 
     }
 }

@@ -68,7 +68,36 @@ class ApiController extends FOSRestController
           return $this->handleView($view);*/
     }
 
+    /**
+     * @Route("/api/sec/cambiar_contrasenia", name="cambiarc")
+     *
+     */
+    public function cambiarContraseniaAction(Request $request)
+    {
 
+        $user = $this->getUser();
+        $newPasswordPlain = $request->get('nueva');
+        $currentPasswordForValidation = $request->get('vieja');
+
+        $encoder_service = $this->get('security.encoder_factory');
+        $encoder = $encoder_service->getEncoder($user);
+        $encodedPassword = $encoder->isPasswordValid($user->getPassword(),$currentPasswordForValidation,$user->getSalt());
+        $salida='mal';
+        if ( $user->getPassword() == $encodedPassword ) {
+            $userManager = $this->container->get('fos_user.user_manager');
+            $user->setPlainPassword($newPasswordPlain);
+            $userManager->updateUser($user, true);
+            $salida='bien';
+        } else {
+            $salida='mal';
+        }
+
+        $data = array('resultado'=>$salida);
+        $view = $this->view($data);
+
+        return $this->handleView($view);
+
+    }
     /**
      * @Route("/api/esta")
      */
@@ -358,6 +387,12 @@ class ApiController extends FOSRestController
                     }else if($request->get('imagename')=='null') {
                         $value->setImageName(null);
                     }
+                    if($request->get("latitud")=="null") {
+                        $value->setLatitud(null);
+                        $value->setLongitud(null);
+                    }else{$value->setLatitud((float)$request->get("latitud"));
+                        $value->setLongitud((float)$request->get("longitud"));}
+
 
                     $entityManager->persist($value);
                     $entityManager->flush();
@@ -399,6 +434,11 @@ class ApiController extends FOSRestController
 
         $nuevoMensaje->setImageFile($file);
         $nuevoMensaje->setUser($user);
+        if($request->get('latitud')!='null'){
+            $nuevoMensaje->setLatitud($request->get('latitud'));
+            $nuevoMensaje->setLongitud($request->get('longitud'));
+        }
+
 
         $user->addMensaje($nuevoMensaje);
         $entityManager->persist($nuevoMensaje , $user);
@@ -440,9 +480,17 @@ class ApiController extends FOSRestController
         }
         if($request->files->get('imageportada')!=null){
 
-            $filep = $request->files->get('imageportada');
+           $filep = $request->files->get('imageportada');
+            $fileName = $request->files->get('imageportada')->getFilename();
 
-            $portada->setImageFile($filep);
+                $algo=$filep->move('imagenes/portada','portada' . '.' . rand (1, 1000000).'.png');
+
+
+
+            $algo2=substr($algo, 17);
+
+            $portada->setImageName($algo2);
+
         }else if($request->get('imagenameportada')=='null') {
             $portada->setImageName(null);
         }
@@ -459,7 +507,6 @@ class ApiController extends FOSRestController
             $entityManager->persist($portada);
             $entityManager->persist($user);
              $entityManager->flush();
-             $actualizado='perfil actualizado';
 
 
 
@@ -483,9 +530,9 @@ class ApiController extends FOSRestController
             }}*/
 
 
-
-        $data = array('perfil'=>$actualizado);
-        $view = $this->view($data);
+        $user->getGroups(['default','list']);
+       // $data = array('perfil'=>$actualizado);
+        $view = $this->view($user);
         return $this->handleView($view);
 
 
