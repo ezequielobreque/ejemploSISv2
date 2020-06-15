@@ -19,3 +19,9 @@ AppBundle\Entity\Mensaje:
         meGustas:
             expose: true
             groups: ['list']
+        longitud:
+            expose: true
+            groups: ['list']
+        latitud:
+            expose: true
+            groups: ['list']

@@ -166,6 +166,25 @@ class Mensaje
         return $this->fechaHora;
     }
 
+    public function getLatitud()
+    {
+        return $this->latitud;
+    }
+
+    public function setLatitud($latitud)
+    {
+        $this->latitud=$latitud;
+    }
+    public function getLongitud()
+    {
+        return $this->latitud;
+    }
+
+    public function setLongitud($longitud)
+    {
+        $this->longitud=$longitud;
+    }
+
     /**
      * @return mixed
      */
