@@ -232,6 +232,7 @@ class ApiController extends FOSRestController
 
 
     }
+    
 
     /**
      * @Route("/api/sec/amigos", name="amigos")
